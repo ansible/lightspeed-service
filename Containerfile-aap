@@ -1,7 +1,7 @@
 # vim: set filetype=dockerfile
-ARG LIGHTSPEED_RAG_CONTENT_IMAGE=quay.io/ttakamiy/rag-content:latest
+ARG AAP_RAG_CONTENT_IMAGE=quay.io/ttakamiy/aap-rag-content:latest
 
-FROM ${LIGHTSPEED_RAG_CONTENT_IMAGE} as lightspeed-rag-content
+FROM ${AAP_RAG_CONTENT_IMAGE} as aap-rag-content
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal
 
@@ -25,8 +25,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR ${APP_ROOT}
 
-COPY --from=lightspeed-rag-content /rag/vector_db/aap_product_docs ./vector_db/aap_product_docs
-COPY --from=lightspeed-rag-content /rag/embeddings_model ./embeddings_model
+COPY --from=aap-rag-content /rag/vector_db/aap_product_docs ./vector_db/aap_product_docs
+COPY --from=aap-rag-content /rag/embeddings_model ./embeddings_model
 
 # Add explicit files and directories
 # (avoid accidental inclusion of local directories or env files or credentials)
