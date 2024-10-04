@@ -30,10 +30,13 @@ COPY --from=aap-rag-content /rag/embeddings_model ./embeddings_model
 
 # Add explicit files and directories
 # (avoid accidental inclusion of local directories or env files or credentials)
+#
+# TODO: Update "--dev" flag given to pdm sync to "--prod" for the production release
+#
 COPY pyproject.toml pdm.lock runner.py ./
 RUN pip3.11 install --no-cache-dir --upgrade pip pdm==2.18.1 \
     && pdm config python.use_venv false \
-    && pdm sync --global --prod -p ${APP_ROOT}
+    && pdm sync --global --dev -p ${APP_ROOT}
 
 
 COPY ols ./ols
